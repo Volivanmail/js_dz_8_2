@@ -1,25 +1,29 @@
 const card = document.querySelectorAll('.card');
 
-let speed = 1000;
+let speed;
 function rotator() {
     card.forEach((item) => {
         const rotatorCase = item.querySelectorAll('.rotator__case');
         for (let i = 0; i < rotatorCase.length; i++) {
-            let speed = rotatorCase[i].dataset.speed;
             let color = rotatorCase[i].dataset.color;
             if (rotatorCase[i].classList.contains('rotator__case_active')) {
                 rotatorCase[i].classList.remove('rotator__case_active');
+                let index;
                 if (i == rotatorCase.length - 1) {
-                    rotatorCase[0].style.color = color;
-                    rotatorCase[0].classList.add('rotator__case_active');
-                    return speed;
+                    i = 0;
                 } else {
-                    rotatorCase[i+1].style.color = color;
-                    rotatorCase[i+1].classList.add('rotator__case_active');
-                    return speed;
+                    i = i + 1;
                 }
+                speed = rotatorCase[i].dataset.speed;
+                rotatorCase[i].style.color = color;
+                rotatorCase[i].classList.add('rotator__case_active');
+                return;
             }
         }
     })
 }
-setInterval(rotator, speed);
+
+setTimeout(function run() {
+    rotator();
+    setTimeout(run, speed);
+}, 1000);
